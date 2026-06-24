@@ -1,10 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BRAND, NAV_LINKS } from '../data/content.js';
 import MagneticButton from './MagneticButton.jsx';
 import WhatsAppIcon from './WhatsAppIcon.jsx';
 
 export default function Navbar() {
   const navRef = useRef(null);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -49,6 +50,42 @@ export default function Navbar() {
             <WhatsAppIcon size={14} /> WhatsApp Me
           </MagneticButton>
         </div>
+
+        {/* Mobile Hamburger Toggle */}
+        <button
+          className={`nav-toggle ${menuOpen ? 'open' : ''}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label="Toggle Menu"
+        >
+          <span className="line"></span>
+          <span className="line"></span>
+          <span className="line"></span>
+        </button>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      <div className={`nav-menu-mob ${menuOpen ? 'open' : ''}`}>
+        <ul className="nav-links-mob">
+          {NAV_LINKS.map((l) => (
+            <li key={l.href}>
+              <a href={l.href} onClick={() => setMenuOpen(false)}>
+                {l.label}
+              </a>
+            </li>
+          ))}
+          <li style={{ marginTop: '12px', width: '100%' }}>
+            <a
+              href={`https://wa.me/${BRAND.whatsapp}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-p"
+              style={{ width: '100%', justifyContent: 'center' }}
+              onClick={() => setMenuOpen(false)}
+            >
+              <WhatsAppIcon size={14} /> WhatsApp Me
+            </a>
+          </li>
+        </ul>
       </div>
     </nav>
   );
